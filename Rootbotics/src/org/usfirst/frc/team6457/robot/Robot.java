@@ -1,0 +1,160 @@
+package org.usfirst.frc.team6457.robot;
+
+import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Spark;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.Victor;
+//import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+//import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+/**
+ * The VM is configured to automatically run this class, and to call the
+ * functions corresponding to each mode, as described in the IterativeRobot
+ * documentation. If you change the name of this class or the package after
+ * creating this project, you must also update the manifest file in the resource
+ * directory.
+ */
+public class Robot extends IterativeRobot {
+	CameraServer camera;
+	Joystick controller;
+	Spark motorLeft_1;
+	Spark motorRight_1;
+	Victor clawMotor;
+	Timer timer;
+	int timeDuration;
+	int robotOff = 9;//i'm guessing check later for buttons on FRC Driver Station
+	int robotOn = 10;// i'm guessing check later for buttons on FRC Driver Station
+	int leftPWM = 0;// PWM port for the spark that runs one of the left motors
+	int rightPWM = 1;// PWM port for the spark that runs one of the right motors
+	int clawPWM = 2;// PWM port for the spark that runs one of the cylinder motor
+	int controllerUSBPort = 0;
+	int clawUpButton = 1;
+	int clawDownButton = 2;
+	int fastButton = 6;//i'm guessing check later for buttons on FRC Driver Station
+	int slowButton = 5; //i'm guessing check later for buttons on FRC Driver Station
+	int rightAxis = 1;
+	int zAxis = 2;
+	int leftAxis = 5;
+	int cylinderAxis = 0;
+	
+	double leftMotorSpeed = 0;
+	double rightMotorSpeed = 0;
+	double clawMotorSpeed = 0;
+	
+	
+	//@Override
+	public void robotInit()
+	{
+		controller = new Joystick(controllerUSBPort);
+		motorLeft_1 = new Spark(leftPWM);
+		motorRight_1 = new Spark(rightPWM);
+		clawMotor = new Victor(clawPWM);
+		
+		
+		clawMotor.set(clawMotorSpeed);
+		motorLeft_1.set(leftMotorSpeed);
+		motorRight_1.set(-rightMotorSpeed);
+		
+		CameraServer.getInstance().startAutomaticCapture();
+		
+	}
+	
+;	public void autonomousInit() 
+	{
+	}
+	 
+	//@Override
+	public void autonomousPeriodic() 
+	{
+		motorLeft_1.set(- .25);
+		motorRight_1.set(.25);
+	}
+	//@Override
+	public void teleopPeriodic() 
+	{
+		double slowPercent = .25;
+		double defaultPercent = .5;
+			
+			leftMotorSpeed = controller.getRawAxis(leftAxis) * defaultPercent;  
+			rightMotorSpeed = controller.getRawAxis(rightAxis) * defaultPercent;
+			
+			if(controller.getRawButton(fastButton))
+			{
+				leftMotorSpeed = controller.getRawAxis(leftAxis);
+				rightMotorSpeed = controller.getRawAxis(rightAxis);
+				//fastTimer.start();
+			}
+			if(controller.getRawButton(slowButton))// I don't know if it's necessary to put an else if on this function and then a else for the default speed
+			{
+				leftMotorSpeed = controller.getRawAxis(leftAxis) * slowPercent;
+				rightMotorSpeed = controller.getRawAxis(rightAxis) * slowPercent;
+				//slowTimer.start();
+			}
+			motorLeft_1.set(leftMotorSpeed);//setting the left motors to a certain speed
+			motorRight_1.set(-rightMotorSpeed);//setting the right motors to a certain speed
+			
+			if(controller.getRawButton(clawUpButton))
+			{
+				clawMotorSpeed = .5;
+			}
+			else if(controller.getRawButton(clawDownButton))
+			{
+				clawMotorSpeed = -.5;
+			}
+			else
+			{
+				clawMotorSpeed = 0;
+			}
+			
+			clawMotor.set(clawMotorSpeed);
+			
+			/*if(controller.getRawButton(fastButton) == true && controller.getRawButton(slowButton) == true) // Make it so if you press a slow button and the fast button at the same time then its going to take the one you chose first and run that and the run the second one you chose 
+			{
+				fastTimer.stop();
+				slowTimer.stop();
+				if(fastTimer.get() < slowTimer.get())
+				{
+					leftMotorSpeed = -controller.getRawAxis(leftAxis);
+					rightMotorSpeed = controller.getRawAxis(rightAxis);
+					fastTimer.reset();
+					slowTimer.reset();
+				}
+				if(slowTimer.get() < fastTimer.get())
+				{
+					leftMotorSpeed = -controller.getRawAxis(leftAxis) * slowPercent;
+					rightMotorSpeed = controller.getRawAxis(rightAxis) * slowPercent;
+					fastTimer.reset();
+					slowTimer.reset();
+				}
+			}*/
+		
+		//**************************************************************************************
+			// need a fast and slow button and conditions to turning
+			//if(fastbutton = true && controller.getRawAxis(zAxis) = 0) the same goes for slow
+			//leftMotorSpeed = -controller.getRawAxis(leftAxis) * defaultPercent;  // LOGITECH CONTROLLER
+			//rightMotorSpeed = controller.getRawAxis(leftAxis) * defaultPercent;
+			//if(controller.getRawAxis(zAxis) < 0)// if the joystick is getting turned to the left then the robot is getting turned to the left
+			//{
+			   //rightMotorSpeed = controller.getRawAxis(leftAxis); // right wheels are going at the value of the joystick's axis         
+			   //leftMotorSpeed = -controller.getRawAxis(leftAxis) * defaultPercent; // left wheels are going at the half of the value of the joystick's axis
+			//}                                                                  
+			//if(controller.getRawAxis(zAxis) > 0)// if the joystick is getting turned to the right then the robot is getting turned to the right 								
+			//{
+			//	leftMotorSpeed = -controller.getRawAxis(leftAxis);
+			//    rightMotorSpeed = controller.getRawAxis(leftAxis) * defaultPercent;
+		//	}
+		//**************************************************************************************
+			
+		///Driver Station Management	
+		//Disable Driver Station With Button
+
+	}
+	
+	
+	//@Override
+	public void testPeriodic()
+	{
+	}
+}
