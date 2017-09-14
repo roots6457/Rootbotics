@@ -1,0 +1,18 @@
+git config --global user.name "<Your full name>"
+git config --global user.email "<Your email address>"
+git config --global color.branch auto
+git config --global color.diff auto
+git config --global color.interactive auto
+git config --global color.status auto
+git config --global color.grep auto
+git config --global alias.st status
+git config --global alias.ci commit
+git config --global alias.br branch
+git config --global alias.co checkout
+git config --global alias.df diff
+git config --global rebase.stat true
+git config --global branch.autosetuprebase always
+git config --global push.default current
+git config --global alias.lg "log --graph --pretty=format:'%C(red)%h%Creset %C(bold blue)%an%Creset %C(blue)<%ae>%Creset %Cgreen(%cd - %cr)%Creset%C(yellow)%d%Creset %n%n%s%n%n%b' --date=short --stat"
+git config --global alias.lgl "log --graph --pretty=format:'%C(red)%h%Creset %C(bold blue)%an%Creset %C(blue)<%ae>%Creset %Cgreen(%cd - %cr)%Creset%C(yellow)%d%Creset %n%n%s%n%n%b' --date=short --stat -p"
+git config --global alias.lgs "log --graph --pretty=format:'%C(red)%h%Creset %C(bold blue)%an%Creset %C(blue)<%ae>%Creset %Cgreen(%cd - %cr)%Creset%C(yellow)%d%Creset %n%n%s%n' --date=short"
